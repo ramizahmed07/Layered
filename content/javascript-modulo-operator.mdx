@@ -1,0 +1,132 @@
+---
+title: 'Demystifying the JavaScript Modulo Operator'
+abstract: The Modulo operator (%) trips up a lot of developers. In this tutorial, we'll break down exactly what it does and explore some practical problems it helps us solve.
+publishedOn: '2023-09-06T12:00:00-0400'
+---
+
+When I first started coding, the Modulo operator (%) had me completely stumped. 😬
+
+Without a clear mental model, the results it spits out look totally arbitrary:
+
+```js
+const what = 10 % 4; // 2
+const the = 10 % 10; // 0
+const heck = 4 % 10; // 4
+```
+
+In this post, we'll demystify this operator by building a better intuition for how division actually works. Along the way, we'll also look at a practical, everyday use case where it really shines.
+
+## A fresh way to think about division
+
+Take this simple expression:
+
+```js
+12 ÷ 4
+```
+
+Division can feel abstract, but here's a concrete way to picture it: we're splitting a number into equally-sized groups.
+
+**Drag the slider below to see this in action:**
+
+<DivisionGroupsDemo />
+
+`12 ÷ 4` gives us `3`, meaning each group ends up holding exactly 3 items. In other words, we're asking: how many items fit into each group?
+
+In the widget above, our dividend (the number being divided) is 12. It's a wonderfully cooperative number — it divides cleanly in many different ways.
+
+Now consider this instead:
+
+```js
+11 ÷ 4
+```
+
+This evaluates to `2.75` — each group gets 2 full items plus three-quarters of another.
+
+That works fine when you're slicing up pizza or cake... **but what if the items can't be broken apart?** What if we need each item to remain whole?
+
+In that case, we can fit 2 items into each group, and we're left with 3 items that don't fit anywhere:
+
+<DivisionGroupsDemo
+  includeRemainderArea={true}
+  numOfItems={11}
+  initialNumOfGroups={4}
+/>
+
+**That leftover amount is called the _remainder_ — and it's exactly what the modulo operator gives us.**
+
+When a number divides evenly into groups (like `12 ÷ 4`), there's nothing left over:
+
+```js
+12 % 4; // 0
+```
+
+When it doesn't divide evenly, modulo tells us how much remains:
+
+```js
+11 % 4; // 3
+```
+
+## A practical use case
+
+I'm a web developer, not a mathematician. So let's talk about where modulo actually earns its keep in real-world code.
+
+There's one pattern I keep running into where modulo is the perfect tool: _cycling through arrays_.
+
+Imagine we have an array of 3 colors. Every second, we want to advance to the next color. When we hit the end, we wrap back around to the beginning:
+
+<CircularColorsDemo />
+
+This is trickier than it sounds. Say we have a variable `timeElapsed` that starts at 0 and increases by 1 each second. We need to map this ever-growing number to an array with only 3 entries.
+
+Put another way, we need a function that behaves like this:
+
+```js
+const COLORS = ['red', 'yellow', 'blue'];
+
+getColor({ timeElapsed: 0 }); // 'red'
+getColor({ timeElapsed: 1 }); // 'yellow'
+getColor({ timeElapsed: 2 }); // 'blue'
+getColor({ timeElapsed: 3 }); // 'red'
+getColor({ timeElapsed: 4 }); // 'yellow'
+getColor({ timeElapsed: 5 }); // 'blue'
+getColor({ timeElapsed: 6 }); // 'red'
+getColor({ timeElapsed: 7 }); // 'yellow'
+getColor({ timeElapsed: 8 }); // 'blue'
+// ...and so on, forever
+```
+
+Here's how modulo solves it elegantly:
+
+```js
+const COLORS = ['red', 'yellow', 'blue'];
+
+function getColor({ timeElapsed }) {
+  const colorIndex = timeElapsed % COLORS.length;
+
+  return COLORS[colorIndex];
+}
+```
+
+It works like a charm. No matter how large `timeElapsed` grows, this function always returns one of the 3 colors and cycles through them in order.
+
+`COLORS.length` equals `3`, so as `timeElapsed` climbs from 0 to 8, here's the sequence of calculations happening under the hood:
+
+```js
+const colorIndex = 0 % 3; // 0
+const colorIndex = 1 % 3; // 1
+const colorIndex = 2 % 3; // 2
+const colorIndex = 3 % 3; // 0
+const colorIndex = 4 % 3; // 1
+const colorIndex = 5 % 3; // 2
+const colorIndex = 6 % 3; // 0
+const colorIndex = 7 % 3; // 1
+const colorIndex = 8 % 3; // 2
+```
+
+We use `colorIndex` to look up the right color from the array. It's guaranteed to always land within the valid range of indexes.
+
+Why does this work? Go back to our division model: we're splitting `timeElapsed` into groups of 3, keeping everything as whole numbers. The remainder can only ever be 0, 1, or 2 — it can never reach 3, because if 3 items were left over, we could fit one more into each group!
+
+The effect is like having a "circular" array. No matter how high `timeElapsed` climbs, it keeps looping through the same 3 colors indefinitely.
+
+This trick alone makes modulo worth knowing. I've reached for it dozens of times over the years, and it's just one of several handy things this little operator can do.
