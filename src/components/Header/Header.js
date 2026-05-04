@@ -1,16 +1,33 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import clsx from 'clsx';
-import { cookies } from 'next/headers';
 import { Rss, Sun, Moon } from 'react-feather';
 
 import Logo from '@/components/Logo';
 import VisuallyHidden from '@/components/VisuallyHidden';
 import styles from './Header.module.css';
+import {
+  COLOR_THEME_COOKIE_NAME,
+  LIGHT_TOKENS,
+  DARK_TOKENS,
+} from '@/constants';
+import { setCookie } from '@/app/actions';
 
-function Header({ theme, className, ...delegated }) {
+function Header({ initialTheme, className, ...delegated }) {
+  const [theme, setTheme] = useState(initialTheme);
+
   async function toggleTheme() {
-    'use server';
-    (await cookies()).set('theme', theme === 'light' ? 'dark' : 'light');
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    const newTokens = newTheme === 'dark' ? DARK_TOKENS : LIGHT_TOKENS;
+    const root = document.documentElement;
+    root.setAttribute('data-color-theme', newTheme);
+    Object.entries(newTokens).forEach(([key, value]) => {
+      root.style.setProperty(key, value);
+    });
+
+    await setCookie(COLOR_THEME_COOKIE_NAME, newTheme);
   }
 
   return (
