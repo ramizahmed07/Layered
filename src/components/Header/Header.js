@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import Cookies from 'js-cookie';
 import { Rss, Sun, Moon } from 'react-feather';
 
 import Logo from '@/components/Logo';
@@ -12,22 +13,21 @@ import {
   LIGHT_TOKENS,
   DARK_TOKENS,
 } from '@/constants';
-import { setCookie } from '@/app/actions';
 
 function Header({ initialTheme, className, ...delegated }) {
   const [theme, setTheme] = useState(initialTheme);
 
-  async function toggleTheme() {
+  function toggleTheme() {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
+
     const newTokens = newTheme === 'dark' ? DARK_TOKENS : LIGHT_TOKENS;
     const root = document.documentElement;
     root.setAttribute('data-color-theme', newTheme);
     Object.entries(newTokens).forEach(([key, value]) => {
       root.style.setProperty(key, value);
     });
-
-    await setCookie(COLOR_THEME_COOKIE_NAME, newTheme);
+    Cookies.set(COLOR_THEME_COOKIE_NAME, newTheme, { expires: 1000 });
   }
 
   return (
