@@ -1,0 +1,15 @@
+.heading {
+  margin-top: 0;
+  color: var(--color-gray-1000);
+  font-size: 3rem;
+  line-height: 50px;
+  margin-bottom: 13px;
+  font-family: var(--font-family-skeleton);
+}
+
+.wrapper p {
+  font-family: var(--font-family-skeleton);
+  font-weight: 300;
+  font-size: 1.7rem;
+  line-height: 32px;
+}
