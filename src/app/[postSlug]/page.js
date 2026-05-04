@@ -6,7 +6,6 @@ import { loadBlogPost } from '@/helpers/file-helpers';
 import BlogHero from '@/components/BlogHero';
 import COMPONENT_MAP from '@/helpers/mdx-components';
 import styles from './postSlug.module.css';
-import Loading from './loading';
 
 export async function generateMetadata({ params }) {
   const { postSlug } = await params;
