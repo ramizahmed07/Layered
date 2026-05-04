@@ -1,7 +1,7 @@
 import RSS from 'rss';
 
 import { getBlogPostList } from '@/helpers/file-helpers';
-import { siteConfig } from '../config';
+import { siteConfig } from '@/constants';
 
 export async function GET() {
   const feed = new RSS({

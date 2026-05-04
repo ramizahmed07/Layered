@@ -1,10 +1,9 @@
 import React from 'react';
 
 import styles from './not-found.module.css';
-import { siteConfig } from '../config';
 
 export const metadata = {
-  title: `404 Not found • ${siteConfig.name}`,
+  title: `404 Not found`,
 };
 
 function NotFound() {

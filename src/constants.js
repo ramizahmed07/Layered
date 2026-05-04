@@ -1,5 +1,16 @@
 export const BLOG_TITLE = 'Layered';
 
+export const COLOR_THEME_COOKIE_NAME = 'theme';
+
+export const siteConfig = {
+  name: BLOG_TITLE,
+  title: {
+    default: BLOG_TITLE,
+    template: `%s | ${BLOG_TITLE}`,
+  },
+  description: 'A layered approach to writing.',
+};
+
 export const LIGHT_COLORS = {
   '--color-text': 'hsl(210deg 20% 10%)',
   '--light-link': 'lab(62.022 58.758 -2.83)',

@@ -5,10 +5,14 @@ import { Spline_Sans_Mono, Montserrat } from 'next/font/google';
 import { MotionConfig } from 'motion/react';
 import { cookies } from 'next/headers';
 
-import { LIGHT_TOKENS, DARK_TOKENS } from '@/constants';
+import {
+  LIGHT_TOKENS,
+  DARK_TOKENS,
+  siteConfig,
+  COLOR_THEME_COOKIE_NAME,
+} from '@/constants';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { siteConfig } from './config';
 import './styles.css';
 
 const wotfard = localFont({
@@ -38,7 +42,8 @@ export const metadata = {
 };
 
 async function RootLayout({ children }) {
-  const theme = (await cookies()).get('theme').value;
+  const theme =
+    (await cookies()).get(COLOR_THEME_COOKIE_NAME)?.value ?? 'light';
   return (
     <MotionConfig reducedMotion='user'>
       <html
