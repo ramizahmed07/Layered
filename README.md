@@ -8,7 +8,7 @@ An interactive MDX blog built with Next.js and React Server Components.
 - Build interactive blog content, not just static text
 - Super fast — 100 Lighthouse score & all green on PageSpeed
 - Flicker-free dark mode
-- Deploys to Vercel in ~30s
+- Deploys to Vercel/Netlify in ~30s
 
 ## Tech
 
